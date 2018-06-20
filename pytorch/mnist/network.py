@@ -14,7 +14,7 @@ class ConvNet(nn.Module):
     def forward(self, x):
         x = F.relu(F.max_pool2d(self.conv1(x), 2))
         x = F.relu(F.max_pool2d(self.conv2(x), 2))
-        x = x.view(-1, x.size(0))
+        x = x.view(x.size(0), -1)
         x = self.classification(x)
 
         return F.softmax(x)

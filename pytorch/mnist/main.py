@@ -22,7 +22,7 @@ def arguments():
                         help='learning rate')
     parser.add_argument('--momentum', default=0.5, type=float,
                         help='SGD momentum')
-    parser.add_argument('--no-cuda', default=False, type=bool,
+    parser.add_argument('--no-cuda', default=False,
                         action='store_true', help='disable CUDA training')
     parser.add_argument('--seed', default=1, type=int, metavar='S',
                         help='random seed')
@@ -70,7 +70,7 @@ def valid(args, model, device, valid_loader):
 def main():
 
     args = arguments()
-    use_cuda = not args.no_cuda and torch.cuda_is_available()
+    use_cuda = not args.no_cuda and torch.cuda.is_available()
 
     torch.manual_seed(args.seed)
 

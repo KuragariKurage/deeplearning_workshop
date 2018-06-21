@@ -1,7 +1,7 @@
 # 使い方
 
 ## 概要
-MNISTデータセットを用いて、手書き文字を識別するネットワークを作成し、テストも行う。
+MNISTデータセットを用いて、手書き文字を識別するネットワークを作成し、テストも行う。  
 
 ## 使い方
 
@@ -20,9 +20,8 @@ MNISTデータセットを用いて、手書き文字を識別するネットワ
 
 ### シーケンシャルモデル
 
-`model = Sequential()`でモデルのインスタンスを作成し、そこに、`model.add()`をすることで、
-データを追加していく。
-1層目のみ`input_shape=`で入力データのサイズを指定する必要があります。このサイズにはバッチサイズは含まない。
+`model = Sequential()`でモデルのインスタンスを作成し、そこに、`model.add()`をすることで、データを追加していく。  
+1層目のみ`input_shape=`で入力データのサイズを指定する必要があります。このサイズにはバッチサイズは含まない。  
 順番は, (横, 縦, チャネル) （設定で変更可)
 
 ```
@@ -43,9 +42,8 @@ def ConvNetSequential(input_shape, n_output):
 
 ### ファンクショナルモデル
 
-シーケンシャルモデルとは異なり、`x = Conv2D()(x)` というような形で各層の出力を、
-次に繋げたい層の引数に入力する。
-そして、最後に`Model(inputs=inputs, outputs=output)`で入力と出力を指定する。
+シーケンシャルモデルとは異なり、`x = Conv2D()(x)` というような形で各層の出力を、次に繋げたい層の引数に入力する。  
+そして、最後に`Model(inputs=inputs, outputs=output)`で入力と出力を指定する。  
 シーケンシャルモデルに比べて自由度が高い。
 
 ```
@@ -67,7 +65,7 @@ def ConvNetFunctional(input_shape, n_output):
 
 ## main.py
 ### 引数を設定。
-"-"をつけるとオプション引数になる。
+"-"をつけるとオプション引数になる。  
 `type`で型を指定。`default`でデフォルトの値を指定。`dest`で参照するときの名前を指定。
 
 ```
@@ -90,7 +88,7 @@ kerasの関数を使用し、データをロードする。
 
 ### Reshape
 
-kerasでは (バッチサイズ, 横, 縦, チャネル) のshapeのndarrayを入力する。
+kerasでは (バッチサイズ, 横, 縦, チャネル) のshapeのndarrayを入力する。  
 しかし, modelの最初のレイヤーの引数にはバッチサイズを省くので, `input_shap = (横, 縦, チャネル)`にする。
 
 ```
@@ -112,8 +110,7 @@ kerasでは (バッチサイズ, 横, 縦, チャネル) のshapeのndarrayを�
 
 ### ラベルの変換
 
-kerasでは, Loss関数に`keras.losses.categorical_crossentropy`を使用する場合、
-ラベルはone-hot形式で与える。
+kerasでは, Loss関数に`keras.losses.categorical_crossentropy`を使用する場合、ラベルはone-hot形式で与える。  
 one-hot形式の例) 3 → [0, 0, 0, 1, 0, 0, 0, 0, 0, 0] (クラス数が10の場合)
 
 ```
@@ -135,7 +132,7 @@ model.compileで 最適化関数と, Loss関数を設定し、Loss以外に計�
 
 ### 学習
 
-model.fit()で学習。
+model.fit()で学習。  
 しかし、この関数では、データセット全体がメモリに乗る場合にしか使えない。
 
 ```
@@ -148,7 +145,7 @@ model.fit()で学習。
 
 ### 評価
 
-model.evaluate()で与えられたデータに対して、Lossとmodel.compileの時に与えられたメトリクスを計算する。
+model.evaluate()で与えられたデータに対して、Lossとmodel.compileの時に与えられたメトリクスを計算する。  
 返り値は, [Loss, メトリクス1, メトリクス2]
 
 ```

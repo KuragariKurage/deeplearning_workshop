@@ -7,6 +7,7 @@ import torchvision.datasets as datasets
 
 import argparse
 from network import CifarConvNet
+from utils import AverageMeter, accuracy
 
 
 def arguments():
@@ -36,39 +37,41 @@ def arguments():
 
 def train(args, model, device, train_loader, optimizer, criterion, epoch):
     model.train()
+    losses = AverageMeter()
+
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
         output = model(data)
         loss = criterion(output, target)
+        losses.update(loss.item(), data.size(0))
         loss.backward()
         optimizer.step()
         if batch_idx % args.log_interval == (args.log_interval - 1):
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss.item()))
+                100. * batch_idx / len(train_loader), losses.avg))
 
 
 def valid(args, model, device, valid_loader, criterion):
     model.eval()
-    val_loss = 0
-    correct = 0
+    val_losses = AverageMeter()
+    val_top1 = AverageMeter()
+
     with torch.no_grad():
         for data, target in valid_loader:
             data, target = data.to(device), target.to(device)
             output = model(data)
-            val_loss += criterion(output,
-                                  target, size_average=False).item()
-            pred = output.max(1, keepdim=True)[1]
-            correct += pred.eq(target.view_as(pred)).sum().item()
+            val_loss = criterion(output, target)
+            val_losses.update(val_loss.item(), data.size(0))
+            prec1 = accuracy(output, target, topk=(1,))
+            val_top1.update(prec1[0], data.size(0))
 
-    val_loss /= len(valid_loader.dataset)
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-        val_loss, correct, len(valid_loader.dataset),
-        100. * correct / len(valid_loader.dataset)))
+    print('\nTest set: Average loss: {:.4f}, Accuracy: {:.2f} %\n'.format(
+        val_losses.avg, val_top1.avg.item()))
 
 
-def predict_classes(model, device, test_loader, criterion):
+def predict_classes(model, device, test_loader):
     classes = ('plane', 'car', 'bird', 'cat',
                'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
@@ -86,7 +89,7 @@ def predict_classes(model, device, test_loader, criterion):
                 class_total[label] += 1
 
     for i in range(10):
-        print('Accuracy of {:.5s} : {:.2d} %'.format(
+        print('Accuracy of {:.5s} : {:.2f} %'.format(
             classes[i], 100 * class_correct[i] / class_total[i]
         ))
 
@@ -125,8 +128,7 @@ def main():
     for epoch in range(1, args.epochs + 1):
         train(args, model, device, train_loader, optimizer, criterion, epoch)
         valid(args, model, device, valid_loader, criterion)
-
-    predict_classes(model, device, valid_loader, criterion)
+        # predict_classes(model, device, valid_loader)
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ class CifarConvNet(nn.Module):
         super(CifarConvNet, self).__init__()
         self.conv1 = nn.Conv2d(3, 64, 5)
         self.conv2 = nn.Conv2d(64, 64, 5)
-        self.fc1 = nn.Linear(64, 384)
+        self.fc1 = nn.Linear(64 * 5 * 5, 384)
         self.fc1_dropout = nn.Dropout()
         self.fc2 = nn.Linear(384, 192)
         self.fc2_dropout = nn.Dropout()
@@ -21,4 +21,4 @@ class CifarConvNet(nn.Module):
         x = F.relu(self.fc2(x))
         x = self.classification(x)
 
-        return F.softmax(x)
+        return x

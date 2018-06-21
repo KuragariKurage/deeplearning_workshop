@@ -35,6 +35,7 @@ def train_test_MNIST(model_type, batch_size, epochs, lr):
     # the data, split between train and test sets
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
+    # reshape
     x_train = x_train.reshape(x_train.shape[0], img_rows, img_cols, 1)
     x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
     input_shape = (img_rows, img_cols, 1)
@@ -54,7 +55,7 @@ def train_test_MNIST(model_type, batch_size, epochs, lr):
     # set Optimizer and loss function
     optimizer = keras.optimizers.Adam(lr=lr)
     model.compile(loss=keras.losses.categorical_crossentropy,
-                  optimizer=keras.optimizers.Adam(),
+                  optimizer=optimizer,
                   metrics=['accuracy'])
 
     # learning

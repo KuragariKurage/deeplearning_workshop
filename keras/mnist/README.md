@@ -113,7 +113,7 @@ kerasでは (バッチサイズ, 横, 縦, チャネル) のshapeのndarrayを�
 ### ラベルの変換
 
 kerasでは, Loss関数に`keras.losses.categorical_crossentropy`を使用する場合、
-ラベルはone-hot形式で与える.
+ラベルはone-hot形式で与える。
 one-hot形式の例) 3 → [0, 0, 0, 1, 0, 0, 0, 0, 0, 0] (クラス数が10の場合)
 
 ```
@@ -135,7 +135,8 @@ model.compileで 最適化関数と, Loss関数を設定し、Loss以外に計�
 
 ### 学習
 
-model.fit()で学習。しかし、この関数では、データセット全体がメモリに乗る場合にしか使えない。
+model.fit()で学習。
+しかし、この関数では、データセット全体がメモリに乗る場合にしか使えない。
 
 ```
     model.fit(x_train, y_train,

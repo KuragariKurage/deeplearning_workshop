@@ -107,5 +107,7 @@ venv.bak/
 # User-specific stuff
 .idea/
 
+# data directory
+/*/*/data
 
 .DS_Store

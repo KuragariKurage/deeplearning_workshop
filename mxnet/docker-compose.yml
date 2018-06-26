@@ -1,0 +1,8 @@
+version: '3'
+services:
+  jupyter:
+    image: okwrtdsh/mxnet:latest
+    ports:
+      - '8888:8888'
+    volumes:
+      - ./notebooks:/src/notebooks

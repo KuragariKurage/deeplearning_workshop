@@ -5,10 +5,15 @@ import torch.optim as optim
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
+import os
+import sys
 import argparse
-from network import CifarConvNet
-from utils import AverageMeter, accuracy
 
+from network import CifarConvNet
+sys.path.append(os.pardir)
+from common.utils import AverageMeter, accuracy
+
+from tensorboardX import SummaryWriter
 
 def arguments():
     parser = argparse.ArgumentParser()
@@ -29,6 +34,8 @@ def arguments():
                         help='random seed')
     parser.add_argument('--log-interval', default=10, type=int, metavar='N',
                         help='how many batches to wait before logging training status')
+    parser.add_argument('--tensorboard', default=False,
+                        action='store_true', help='enable Tensorboard')
 
     args = parser.parse_args()
 
@@ -80,10 +87,11 @@ def predict_classes(model, device, test_loader):
     class_total = list(0. for i in range(10))
     with torch.no_grad():
         for data, labels in test_loader:
+            data, labels = data.to(device), labels.to(device)
             outputs = model(data)
             _, predicted = torch.max(outputs, 1)
             c = (predicted == labels).squeeze()
-            for i in range(4):
+            for i in range(10):
                 label = labels[i]
                 class_correct[label] += c[i].item()
                 class_total[label] += 1
@@ -92,6 +100,8 @@ def predict_classes(model, device, test_loader):
         print('Accuracy of {:.5s} : {:.2f} %'.format(
             classes[i], 100 * class_correct[i] / class_total[i]
         ))
+
+    print()
 
 
 def main():
@@ -120,6 +130,8 @@ def main():
         batch_size=args.test_batch_size, shuffle=True, **kwargs
     )
 
+    # writer = SummaryWriter('./log/')
+
     model = CifarConvNet().to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=args.lr,
@@ -128,7 +140,7 @@ def main():
     for epoch in range(1, args.epochs + 1):
         train(args, model, device, train_loader, optimizer, criterion, epoch)
         valid(args, model, device, valid_loader, criterion)
-        # predict_classes(model, device, valid_loader)
+        predict_classes(model, device, valid_loader)
 
 
 if __name__ == '__main__':

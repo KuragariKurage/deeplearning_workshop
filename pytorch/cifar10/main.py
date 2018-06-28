@@ -5,9 +5,9 @@ import torch.optim as optim
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
-import os
-import sys
 import argparse
+import sys
+import os
 
 from network import CifarConvNet
 sys.path.append(os.pardir)

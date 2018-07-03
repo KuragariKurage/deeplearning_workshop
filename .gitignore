@@ -141,6 +141,7 @@ Temporary Items
 
 ### dataset
 data/
+pytorch/cifar10/runs/
 # data directory
 /*/*/data
 

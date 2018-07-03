@@ -4,6 +4,16 @@
 
 pytorchでCIFAR10の画像分類タスクを行うCNNの実装．
 
+(7/3) Tensorboardに対応．基本的な使い方は[ここに](https://www.tensorflow.org/programmers_guide/summaries_and_tensorboard)．
+
+## Requirement
+
+[TensorboardX](https://github.com/lanpa/tensorboard-pytorch)をインストールする．
+```bash:
+pip install tensorboardX
+```
+Chainerでも使えるらしい．
+
 ## 使い方
 
 mnistと同じ．
@@ -11,7 +21,7 @@ mnistと同じ．
 ```bash:
 main.py [-h] [--batch-size BATCH_SIZE]
                [--test-batch-size TEST_BATCH_SIZE] [--epochs N] [--lr LR]
-               [--momentum MOMENTUM] [--no-cuda] [--seed S] [--log-interval N]
+               [--momentum MOMENTUM] [--no-cuda] [--seed S] [--log-interval N] [--tensorboard]
 ```
 
 optional arguments:
@@ -26,6 +36,7 @@ optional arguments:
   - `--no-cuda`             CUDAを使用しない（CPUで学習するとき）
   - `--seed S`              ランダムシード
   - `--log-interval N`      エポックNごとにログを表示
+  - `--tensorboard`       Tensorboardの有効化
 
 
 ## コード内容

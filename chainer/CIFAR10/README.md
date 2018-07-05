@@ -118,11 +118,7 @@ def main():
 学習にはtrainerを使います。
 ```
     trainer=training.Trainer(updater, (max_epoch, 'epoch'),out='cifar10_result')
-    ...
-    trainer.run()
-```
-extensionでいろいろできる。
-```
+
     #save the log
     trainer.extend(extensions.LogReport())
 
@@ -147,6 +143,8 @@ extensionでいろいろできる。
 
     #print the progress bar
     trainer.extend(extensions.ProgressBar())
+
+    trainer.run()
 ```
 PlotReportで出てきたグラフ
 

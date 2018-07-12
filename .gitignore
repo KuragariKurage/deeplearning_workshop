@@ -143,7 +143,13 @@ Temporary Items
 data/
 pytorch/cifar10/runs/
 # data directory
-/*/*/data
+/keras/*/data
+
+### checkpoint
+/keras/*/checkpoint
+
+### log
+/keras/*/log
 
 # User-specific stuff
 .idea/
